@@ -6,7 +6,7 @@
 
 import abc
 import tensorflow as tf
-from tensorpack import ModelDesc, InputDesc
+from tensorpack import ModelDesc
 from tensorpack.utils import logger
 from tensorpack.tfutils import (
     collection, summary, get_current_tower_context, optimizer, gradproc)
@@ -32,12 +32,12 @@ class Model2D(ModelDesc):
     def inputs(self):
         # Use a combined state for efficiency.
         # The first h channels are the current state, and the last h channels are the next state.
-        return [InputDesc(tf.uint8,
+        return [TensorSpec(tf.uint8,
                           (None,) + self.image_shape + (self.channel + 1,),
                           'comb_state'),
-                InputDesc(tf.int64, (None,), 'action'),
-                InputDesc(tf.float32, (None,), 'reward'),
-                InputDesc(tf.bool, (None,), 'isOver')]
+                TensorSpec(tf.int64, (None,), 'action'),
+                TensorSpec(tf.float32, (None,), 'reward'),
+                TensorSpec(tf.bool, (None,), 'isOver')]
 
     @abc.abstractmethod
     def _get_DQN_prediction(self, image):
@@ -128,12 +128,12 @@ class Model3D(ModelDesc):
     def inputs(self):
         # Use a combined state for efficiency.
         # The first h channels are the current state, and the last h channels are the next state.
-        return [InputDesc(tf.uint8,
+        return [TensorSpec(tf.uint8,
                           (None,) + self.image_shape + (self.channel + 1,),
                           'comb_state'),
-                InputDesc(tf.int64, (None,), 'action'),
-                InputDesc(tf.float32, (None,), 'reward'),
-                InputDesc(tf.bool, (None,), 'isOver')]
+                TensorSpec(tf.int64, (None,), 'action'),
+                TensorSpec(tf.float32, (None,), 'reward'),
+                TensorSpec(tf.bool, (None,), 'isOver')]
 
     @abc.abstractmethod
     def _get_DQN_prediction(self, image):
